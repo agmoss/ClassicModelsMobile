@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    >
+
+    <EditText
+        android:id="@+id/etOrderDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Order Date"
+        />
+
+    <EditText
+            android:id="@+id/etRequiredDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Required Date"
+    />
+
+    <EditText
+            android:id="@+id/etShippedDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Shipped Date"
+    />
+
+    <EditText
+            android:id="@+id/etStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Status"
+    />
+
+
+    <EditText
+        android:id="@+id/etComments"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Comments"
+        />
+
+    <EditText
+        android:id="@+id/etCustomerNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Customer Number"
+        />
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sumbit"
+        />
+
+</LinearLayout>
