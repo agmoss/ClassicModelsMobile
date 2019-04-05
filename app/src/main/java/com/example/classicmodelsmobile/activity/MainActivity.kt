@@ -1,29 +1,32 @@
-package com.example.classicmodelsmobile
+package com.example.classicmodelsmobile.activity
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.*
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import com.example.classicmodelsmobile.OrderApplication
+import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderMvp
 import com.example.classicmodelsmobile.presenter.OrderPresenter
-
 import com.example.classicmodelsmobile.view.DialogOrder
-
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
-import java.util.ArrayList
+import java.util.*
 
-class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
+class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
 
     var adapter: RvAdapter = RvAdapter(ArrayList<Order>())
     var presenter: OrderPresenter? = null
-    var dialog:DialogOrder? = null
+    var dialog: DialogOrder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,16 +70,7 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
     }
 
 
-/*    fun displayDetails(order:Order){
-        //val displayOrderDetails = Intent(this@MainActivity,OrderDetailsActivity::class.java)
-
-        displayOrderDetails.putExtra("selectedOrderDetails",order.details)
-
-        startActivity(displayOrderDetails)
-    }*/
-
-
-    fun switchAct(){
+    fun switchAct() {
         val intent = Intent(this, ActivityOrderDetails::class.java)
         // To pass any data to next activity
         //intent.putExtra("keyIdentifier", value)
@@ -101,28 +95,24 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
             p0?.itemView?.vOption!!.setOnClickListener {
                 val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
                 popUp.inflate(R.menu.menu_more)
-                val menuOption: PopupMenu.OnMenuItemClickListener = PopupMenu.OnMenuItemClickListener {
-                        menuItem:MenuItem ->
-                    if(menuItem.itemId == R.id.menuDelete){
-                        this@MainActivity.presenter?.deleteData(lsOrders[position].orderNumber)
+                val menuOption: PopupMenu.OnMenuItemClickListener =
+                    PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
+                        if (menuItem.itemId == R.id.menuDelete) {
+                            this@MainActivity.presenter?.deleteData(lsOrders[position].orderNumber)
 
-                        //TODO: Need a refresh
-                        true
-                    }else if (menuItem.itemId == R.id.menuEdit) {
+                            //TODO: Need a refresh
+                            true
+                        } else if (menuItem.itemId == R.id.menuEdit) {
 
-                        this@MainActivity.dialog?.showDialog(true, lsOrders[position])
-                        true
-                    }else{
-                        //Order details intent
-                        // SWITCH
-                        //this@MainActivity.displayDetails(lsOrders[position])
-                            //true
+                            this@MainActivity.dialog?.showDialog(true, lsOrders[position])
+                            true
+                        } else {
 
-                        this@MainActivity.switchAct()
-                        true
-
+                            // SWITCH ACTIVITY
+                            this@MainActivity.switchAct()
+                            true
+                        }
                     }
-                }
 
                 popUp.setOnMenuItemClickListener(menuOption)
                 popUp.show()
@@ -131,10 +121,9 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
         }
 
 
-
         override fun getItemCount() = lsOrders.size
 
-        fun update(lsOrders: MutableList<Order>){
+        fun update(lsOrders: MutableList<Order>) {
             this.lsOrders = lsOrders
             notifyDataSetChanged()
         }
@@ -145,7 +134,7 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
 
         fun bindValue(order: Order) {
 
-            with(order){
+            with(order) {
                 itemView.txtTitle.text = "$orderNumber"
                 itemView.txtDesc.text = "$status"
                 itemView.txtDate.text = "$orderDate"

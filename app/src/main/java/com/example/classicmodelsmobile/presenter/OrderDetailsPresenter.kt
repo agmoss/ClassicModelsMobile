@@ -5,8 +5,8 @@ import com.example.classicmodelsmobile.repository.DbHelper
 
 class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, db:DbHelper):OrderDetailsMvp.OrderPresenter {
 
-    val orderDetailsView: OrderDetailsMvp.OrderDetailsView = orderDetailsView
-    val db: DbHelper = db
+    private val orderDetailsView: OrderDetailsMvp.OrderDetailsView = orderDetailsView
+    private val db: DbHelper = db
 
     override fun insertData(orderDetail: OrderDetails) {
         if(db.insertData(orderDetail)){
@@ -21,7 +21,7 @@ class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, 
         val orderList: List<OrderDetails> = db.getOrderDetails()
         orderDetailsView.onLoad(true)
 
-        if(orderList.size > 0)
+        if(orderList.isNotEmpty())
             orderDetailsView.setData(orderList)
         else
             orderDetailsView.setEmpty()

@@ -1,8 +1,8 @@
-package com.example.classicmodelsmobile
+package com.example.classicmodelsmobile.activity
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsMvp
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
@@ -21,7 +22,7 @@ import kotlinx.android.synthetic.main.item_list.view.*
 class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsView {
 
 
-    var adapter: ActivityOrderDetails.RvAdapter = RvAdapter(java.util.ArrayList<OrderDetails>())
+    var adapter: RvAdapter = RvAdapter(java.util.ArrayList())
     var presenter: OrderDetailsPresenter? = null
     var dialog: DialogOrderDetails? = null //TODO: Change
 
@@ -34,8 +35,7 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         rvDetail_OrderDetail.adapter = adapter
 
         //val app: OrderApplication = this.application as OrderApplication
-
-        var db: DbHelper = DbHelper(this)
+        var db = DbHelper(this)
 
         presenter = OrderDetailsPresenter(this, db)
         dialog = DialogOrderDetails(this, presenter!!)
@@ -67,16 +67,16 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
     }
 
 
-    inner class RvAdapter(lsOrderDetails: MutableList<OrderDetails>) : RecyclerView.Adapter<ActivityOrderDetails.ViewHolder>() {
+    inner class RvAdapter(lsOrderDetails: MutableList<OrderDetails>) : RecyclerView.Adapter<ViewHolder>() {
 
         var lsOrderDetails: MutableList<OrderDetails> = lsOrderDetails
 
-        override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ActivityOrderDetails.ViewHolder {
+        override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ViewHolder {
             val view: View = LayoutInflater.from(p0?.context).inflate(R.layout.item_list, null, false)
-            return ActivityOrderDetails.ViewHolder(view)
+            return ViewHolder(view)
         }
 
-        override fun onBindViewHolder(p0: ActivityOrderDetails.ViewHolder, position: Int) {
+        override fun onBindViewHolder(p0: ViewHolder, position: Int) {
 
             p0?.bindValue(lsOrderDetails[position])
 
@@ -103,7 +103,7 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
 
         override fun getItemCount() = lsOrderDetails.size
 
-        fun update(lsOrders: MutableList<OrderDetails>){
+        fun update(lsOrders: MutableList<OrderDetails>) {
             this.lsOrderDetails = lsOrders
             notifyDataSetChanged()
         }
@@ -113,7 +113,7 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
 
         fun bindValue(detail: OrderDetails) {
 
-            with(detail){
+            with(detail) {
                 itemView.txtTitle.text = "$orderNumber"
                 itemView.txtDesc.text = "$orderLineNumber"
                 itemView.txtDate.text = "$quantityOrdered"
