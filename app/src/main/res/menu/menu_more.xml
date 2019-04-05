@@ -9,4 +9,8 @@
         android:title="Delete"
         android:id="@+id/menuDelete"/>
 
+    <item
+            android:title="View Details"
+            android:id="@+id/menuViewDetails"/>
+
 </menu>

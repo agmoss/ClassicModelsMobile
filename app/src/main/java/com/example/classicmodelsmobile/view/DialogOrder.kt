@@ -46,7 +46,7 @@ class DialogOrder : Dialog {
                     ,etStatus.text.toString(),etComments.text.toString(), etCustomerNumber.text.toString().toInt())
                     presenter.insertData(order)
                 }else{
-                    val order: Order = Order(ord!!.customerNumber,etOrderDate.text.toString(),etRequiredDate.text.toString(),etShippedDate.text.toString()
+                    val order: Order = Order(ord!!.orderNumber,etOrderDate.text.toString(),etRequiredDate.text.toString(),etShippedDate.text.toString()
                         ,etStatus.text.toString(),etComments.text.toString(), etCustomerNumber.text.toString().toInt())
                     presenter.updateData(order)
                 }

@@ -1,5 +1,6 @@
 package com.example.classicmodelsmobile
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.widget.SwipeRefreshLayout
@@ -11,7 +12,6 @@ import android.view.*
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderMvp
 import com.example.classicmodelsmobile.presenter.OrderPresenter
-import com.example.classicmodelsmobile.OrderApplication
 
 import com.example.classicmodelsmobile.view.DialogOrder
 
@@ -28,8 +28,8 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        rvMain.layoutManager = LinearLayoutManager(this)
-        rvMain.adapter = adapter
+        rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
+        rvDetail_OrderDetail.adapter = adapter
 
         val app: OrderApplication = this.application as OrderApplication
         presenter = OrderPresenter(this, app.db)
@@ -46,16 +46,16 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
     }
 
     override fun setData(listOrders: List<Order>) {
-        txtEmpty.visibility = View.GONE
+        txtEmptyDetail.visibility = View.GONE
         adapter.update(listOrders as MutableList<Order>)
     }
 
     override fun setEmpty() {
-        txtEmpty.visibility = View.VISIBLE
+        txtEmptyDetail.visibility = View.VISIBLE
     }
 
     override fun setResult(message: String) {
-        Snackbar.make(layRoot, message, Snackbar.LENGTH_SHORT).show()
+        Snackbar.make(layRootDetail, message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun onRefresh() {
@@ -63,7 +63,25 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
     }
 
     override fun onLoad(isLoad: Boolean) {
-        refresh.isRefreshing = isLoad
+        refreshDetail.isRefreshing = isLoad
+    }
+
+
+/*    fun displayDetails(order:Order){
+        //val displayOrderDetails = Intent(this@MainActivity,OrderDetailsActivity::class.java)
+
+        displayOrderDetails.putExtra("selectedOrderDetails",order.details)
+
+        startActivity(displayOrderDetails)
+    }*/
+
+
+    fun switchAct(){
+        val intent = Intent(this, ActivityOrderDetails::class.java)
+        // To pass any data to next activity
+        //intent.putExtra("keyIdentifier", value)
+        // start your next activity
+        startActivity(intent)
     }
 
 
@@ -88,13 +106,21 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
                     if(menuItem.itemId == R.id.menuDelete){
                         this@MainActivity.presenter?.deleteData(lsOrders[position].orderNumber)
 
-
                         //TODO: Need a refresh
                         true
-                    }else{
+                    }else if (menuItem.itemId == R.id.menuEdit) {
 
                         this@MainActivity.dialog?.showDialog(true, lsOrders[position])
                         true
+                    }else{
+                        //Order details intent
+                        // SWITCH
+                        //this@MainActivity.displayDetails(lsOrders[position])
+                            //true
+
+                        this@MainActivity.switchAct()
+                        true
+
                     }
                 }
 
@@ -103,6 +129,8 @@ class MainActivity : AppCompatActivity(),OrderMvp.OrderView, SwipeRefreshLayout.
 
             }
         }
+
+
 
         override fun getItemCount() = lsOrders.size
 
