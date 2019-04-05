@@ -5,10 +5,6 @@ import com.example.classicmodelsmobile.repository.DbHelper
 
 class OrderApplication: Application() {
 
-    public var db: DbHelper = DbHelper(this)
-    override fun onCreate() {
-        super.onCreate()
-
-    }
+    var db: DbHelper = DbHelper(this)
 
 }
