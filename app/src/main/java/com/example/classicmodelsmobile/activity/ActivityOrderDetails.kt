@@ -11,6 +11,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import com.example.classicmodelsmobile.R
+import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsMvp
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
@@ -39,6 +40,10 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
 
         presenter = OrderDetailsPresenter(this, db)
         dialog = DialogOrderDetails(this, presenter!!)
+
+        val selectedOrder : Order = intent.getSerializableExtra("selectedOrder") as Order
+
+        presenter?.populateDetails(selectedOrder.details)
 
         //presenter?.getAllData() populate!!!
 

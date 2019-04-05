@@ -1,14 +1,20 @@
 package com.example.classicmodelsmobile.presenter
 
 
+import android.provider.Contacts
 import com.example.classicmodelsmobile.model.Order
+import com.example.classicmodelsmobile.repository.Accessor
 import com.example.classicmodelsmobile.repository.DbHelper
+import com.github.kittinunf.fuel.core.Handler
+import com.github.kittinunf.fuel.httpGet
+import kotlinx.coroutines.*
 
-class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper) : OrderMvp.OrderPresenter {
 
+class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper, ac: Accessor) : OrderMvp.OrderPresenter {
 
     private val orderView: OrderMvp.OrderView = orderView
     private val db : DbHelper = db
+    private val ac : Accessor = ac
 
     override fun insertData(order: Order) {
         if(db.insertData(order)){
@@ -19,16 +25,26 @@ class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper) : OrderMvp.Orde
         }
     }
 
-    override fun getAllData(){
-        val orderList: List<Order> = db.getAllOrders()
-        orderView.onLoad(true)
+    override fun getAllData() {
 
-        if(orderList.isNotEmpty())
-            orderView.setData(orderList)
-        else
-            orderView.setEmpty()
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders"
 
-        orderView.onLoad(false)
+        var Orders = ArrayList<Order>()
+
+        URL.httpGet().responseObject(Order.Deserializer()) { request, response, result ->
+            val (order, err) = result
+
+            println("API RESULT $result")
+            //Add to ArrayList
+            order?.forEach { ord ->
+
+                Orders.add(ord)
+            }
+
+            orderView.setData(Orders)
+
+        }
+
     }
 
     override fun deleteData(id: Int) {

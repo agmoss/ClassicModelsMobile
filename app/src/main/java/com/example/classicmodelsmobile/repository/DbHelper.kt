@@ -77,7 +77,7 @@ class DbHelper : SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 val order: OrderDetails = OrderDetails(
-                    cursor.getInt(0), cursor.getInt(1), cursor.getString(2)
+                    cursor.getInt(0), cursor.getString(1), cursor.getString(2)
                     , cursor.getString(3), cursor.getInt(4)
                 )
                 lsOrderDetails.add(order)

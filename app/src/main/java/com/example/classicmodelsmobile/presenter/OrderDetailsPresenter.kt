@@ -1,5 +1,6 @@
 package com.example.classicmodelsmobile.presenter
 
+import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.repository.DbHelper
 
@@ -27,6 +28,18 @@ class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, 
             orderDetailsView.setEmpty()
 
         orderDetailsView.onLoad(false)
+    }
+
+    fun populateDetails(details : ArrayList<OrderDetails>){
+        orderDetailsView.onLoad(true)
+
+        if(details.isNotEmpty())
+            orderDetailsView.setData(details)
+        else
+            orderDetailsView.setEmpty()
+
+        orderDetailsView.onLoad(false)
+
     }
 
     override fun deleteData(id: Int) {

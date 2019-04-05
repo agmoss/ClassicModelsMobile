@@ -35,7 +35,7 @@ class DialogOrderDetails : Dialog {
 
                     val detail = OrderDetails(
                         0,
-                        etProductCode.text.toString().toInt(),
+                        etProductCode.text.toString(),
                         etQuantityOrdered.text.toString(),
                         etPriceEach.text.toString()
                         ,
@@ -45,7 +45,7 @@ class DialogOrderDetails : Dialog {
                 } else {
                     val detail = OrderDetails(
                         ordDtl!!.orderNumber,
-                        etProductCode.text.toString().toInt(),
+                        etProductCode.text.toString(),
                         etQuantityOrdered.text.toString(),
                         etPriceEach.text.toString(),
                         etOrderLineNumber.text.toString().toInt()

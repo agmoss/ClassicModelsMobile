@@ -1,5 +1,8 @@
 package com.example.classicmodelsmobile.model
 
+import com.github.kittinunf.fuel.core.ResponseDeserializable
+import com.google.gson.Gson
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -10,7 +13,11 @@ class Order(val orderNumber:Int,
             val status: String,
             val comments:String,
             val customerNumber: Int,
-            val details: ArrayList<OrderDetails> = arrayListOf()) {
+            val details: ArrayList<OrderDetails> = arrayListOf()) : Serializable {
+
+    class Deserializer: ResponseDeserializable<Array<Order>> {
+        override fun deserialize(content: String): Array<Order>? = Gson().fromJson(content, Array<Order>::class.java)
+    }
 
 
 }
