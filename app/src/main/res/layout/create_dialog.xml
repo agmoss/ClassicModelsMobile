@@ -6,16 +6,25 @@
     >
 
     <EditText
-        android:id="@+id/etOrderDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Order Date"
-        />
+            android:id="@+id/etOrderNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Order Number"
+    />
 
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Order Date"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/etOrderDate"/>
     <EditText
             android:id="@+id/etRequiredDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
             android:hint="Required Date"
     />
 
@@ -23,6 +32,8 @@
             android:id="@+id/etShippedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
             android:hint="Shipped Date"
     />
 

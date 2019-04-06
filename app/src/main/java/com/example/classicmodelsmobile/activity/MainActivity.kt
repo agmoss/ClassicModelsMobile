@@ -35,13 +35,11 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         rvDetail_OrderDetail.adapter = adapter
 
         val app: OrderApplication = this.application as OrderApplication
-        presenter = OrderPresenter(this, app.db, app.ac)
+        presenter = OrderPresenter(this)
         dialog = DialogOrder(this, presenter!!)
 
-
         presenter!!.getAllData()
-
-
+        
         fabAdd.setOnClickListener { view ->
             dialog?.clear()
             dialog?.showDialog(false, null)
@@ -84,21 +82,21 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         var lsOrders: MutableList<Order> = lsOrders
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ViewHolder {
-            val view: View = LayoutInflater.from(p0?.context).inflate(R.layout.item_list, null, false)
+            val view: View = LayoutInflater.from(p0.context).inflate(R.layout.item_list, null, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(p0: ViewHolder, position: Int) {
 
-            p0?.bindValue(lsOrders[position])
+            p0.bindValue(lsOrders[position])
 
-            p0?.itemView?.vOption!!.setOnClickListener {
-                val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
+            p0.itemView.vOption!!.setOnClickListener {
+                val popUp: PopupMenu = PopupMenu(p0.itemView.context, p0.itemView.vOption)
                 popUp.inflate(R.menu.menu_order)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         if (menuItem.itemId == R.id.menuDelete) {
-                            this@MainActivity.presenter?.deleteData(lsOrders[position].orderNumber)
+                            this@MainActivity.presenter?.deleteData(lsOrders[position])
 
                             //TODO: Need a refresh
                             true
@@ -142,8 +140,5 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
             }
         }
     }
-
-
-
 
 }

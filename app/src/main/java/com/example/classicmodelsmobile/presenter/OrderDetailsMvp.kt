@@ -13,9 +13,9 @@ class OrderDetailsMvp {
     }
 
     interface OrderPresenter{
-        fun insertData(order: OrderDetails)
-        fun deleteData(id: Int)
-        fun updateData(order: OrderDetails)
+        fun insertData(orderDetail: OrderDetails)
+        fun deleteData(orderDetail: OrderDetails)
+        fun updateData(orderDetail: OrderDetails)
         fun getAllData()
     }
 }

@@ -1,20 +1,18 @@
 package com.example.classicmodelsmobile.presenter
 
-import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
-import com.example.classicmodelsmobile.repository.DbHelper
 import com.github.kittinunf.fuel.httpDelete
 import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.google.gson.Gson
 
-class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, db:DbHelper):OrderDetailsMvp.OrderPresenter {
-    override fun deleteData(id: Int) {
+class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView):OrderDetailsMvp.OrderPresenter {
+    override fun getAllData() {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
     private val orderDetailsView: OrderDetailsMvp.OrderDetailsView = orderDetailsView
-    private val db: DbHelper = db
+
 
     override fun insertData(orderDetail: OrderDetails) {
 
@@ -37,7 +35,7 @@ class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, 
         }
     }
 
-    override fun getAllData(){
+/*    override fun getAllData(){
         val orderList: List<OrderDetails> = db.getOrderDetails()
         orderDetailsView.onLoad(true)
 
@@ -47,7 +45,7 @@ class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, 
             orderDetailsView.setEmpty()
 
         orderDetailsView.onLoad(false)
-    }
+    }*/
 
     fun populateDetails(details : ArrayList<OrderDetails>){
         orderDetailsView.onLoad(true)
@@ -61,7 +59,7 @@ class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView, 
 
     }
 
-     fun deleteData(orderDetail: OrderDetails) {
+     override fun deleteData(orderDetail: OrderDetails) {
 
         val URL = "https://classicmodelsrest.azurewebsites.net/api/orderdetail/"+orderDetail.orderNumber + "/" + orderDetail.productCode
 

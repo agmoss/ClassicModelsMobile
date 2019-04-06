@@ -1,27 +1,36 @@
 package com.example.classicmodelsmobile.presenter
 
 
-import android.provider.Contacts
 import com.example.classicmodelsmobile.model.Order
-import com.example.classicmodelsmobile.repository.Accessor
-import com.example.classicmodelsmobile.repository.DbHelper
-import com.github.kittinunf.fuel.core.Handler
+import com.github.kittinunf.fuel.httpDelete
 import com.github.kittinunf.fuel.httpGet
-import kotlinx.coroutines.*
+import com.github.kittinunf.fuel.httpPost
+import com.github.kittinunf.fuel.httpPut
+import com.google.gson.Gson
 
 
-class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper, ac: Accessor) : OrderMvp.OrderPresenter {
+class OrderPresenter(orderView:OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
     private val orderView: OrderMvp.OrderView = orderView
-    private val db : DbHelper = db
-    private val ac : Accessor = ac
 
     override fun insertData(order: Order) {
-        if(db.insertData(order)){
-            orderView.setResult("New data added")
-            getAllData()
-        }else{
-            orderView.setResult("Failed add data")
+
+        val orderJson = Gson().toJson(order)
+
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"
+
+        URL.httpPost().header("Content-Type" to "application/json").body(orderJson.toString()).response { req, res, result ->
+            val (res, err) = result
+
+            println(result)
+
+            if(err == null){
+                orderView.setResult("New data added")
+                //TODO: Refresh
+                //getAllData()
+            }else{
+                orderView.setResult(err.toString() + res.toString())
+            }
         }
     }
 
@@ -44,21 +53,45 @@ class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper, ac: Accessor) :
         }
     }
 
-    override fun deleteData(id: Int) {
-        if(db.deleteData(id)){
-            orderView.setResult("Data deleted")
-            getAllData()
-        }else{
-            orderView.setResult("Failed delete data")
+    override fun deleteData(order: Order) {
+
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"+order.orderNumber
+
+        URL.httpDelete().header("Content-Type" to "application/json").response{req, res, result ->
+
+            val (res, err) = result
+
+            if(err == null){
+                orderView.setResult("Data Deleted")
+                //TODO: Refresh
+                //getAllData()
+            }else{
+                orderView.setResult(err.toString() + res.toString())
+            }
         }
     }
 
     override fun updateData(order: Order) {
-        if(db.updateData(order)){
-            orderView.setResult("Data updated")
-            getAllData()
-        }else{
-            orderView.setResult("Failed update data")
+
+
+        val orderJson = Gson().toJson(order)
+
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"+order.orderNumber
+
+        URL.httpPut().header("Content-Type" to "application/json").body(orderJson.toString()).response { req, res, result ->
+            val (res, err) = result
+
+            println(orderJson)
+            println(result)
+
+
+            if(err == null){
+                orderView.setResult("Data updated")
+                //TODO: Refresh
+                //getAllData()
+            }else{
+                orderView.setResult(err.toString() + res.toString())
+            }
         }
     }
 }

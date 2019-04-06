@@ -10,12 +10,12 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import com.example.classicmodelsmobile.OrderApplication
 import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsMvp
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
-import com.example.classicmodelsmobile.repository.DbHelper
 import com.example.classicmodelsmobile.view.DialogOrderDetails
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.item_list.view.*
@@ -35,12 +35,11 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
-        //val app: OrderApplication = this.application as OrderApplication
-        var db = DbHelper(this)
+        val app: OrderApplication = this.application as OrderApplication
 
         val selectedOrder : Order = intent.getSerializableExtra("selectedOrder") as Order
 
-        presenter = OrderDetailsPresenter(this, db)
+        presenter = OrderDetailsPresenter(this)
         dialog = DialogOrderDetails(this, presenter!!, selectedOrder)
 
         presenter?.populateDetails(selectedOrder.details)
@@ -75,16 +74,16 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         var lsOrderDetails: MutableList<OrderDetails> = lsOrderDetails
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ViewHolder {
-            val view: View = LayoutInflater.from(p0?.context).inflate(R.layout.item_list, null, false)
+            val view: View = LayoutInflater.from(p0.context).inflate(R.layout.item_list, null, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(p0: ViewHolder, position: Int) {
 
-            p0?.bindValue(lsOrderDetails[position])
+            p0.bindValue(lsOrderDetails[position])
 
-            p0?.itemView?.vOption!!.setOnClickListener {
-                val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
+            p0.itemView.vOption!!.setOnClickListener {
+                val popUp: PopupMenu = PopupMenu(p0.itemView.context, p0.itemView.vOption)
                 popUp.inflate(R.menu.menu_order_details)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
