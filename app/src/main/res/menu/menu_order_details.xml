@@ -9,8 +9,5 @@
             android:title="Delete"
             android:id="@+id/menuDeleteDetail"/>
 
-    <item
-            android:title="Update"
-            android:id="@+id/menuUpdateDetail"/>
 
 </menu>

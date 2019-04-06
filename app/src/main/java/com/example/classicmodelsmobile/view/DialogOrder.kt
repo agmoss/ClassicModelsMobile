@@ -4,19 +4,9 @@ import android.app.Dialog
 import android.content.Context
 import android.widget.Button
 import android.widget.EditText
-import com.example.classicmodelsmobile.R
+import com.example.classicmodelsmobile.R.layout.create_dialog
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderPresenter
-import kotlinx.android.synthetic.main.create_dialog.*
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.*
-import java.time.ZoneId.systemDefault
-import java.time.temporal.TemporalQueries.localDate
-
-import com.example.classicmodelsmobile.R.layout.create_dialog
-import java.time.ZoneId
 
 
 class DialogOrder : Dialog {
@@ -51,8 +41,14 @@ class DialogOrder : Dialog {
                 if (!mIsEdit) {
 
                     val order = Order(
-                        etOrderNumber.text.toString().toInt(), etOrderDate.text.toString(), etRequiredDate.text.toString(), etShippedDate.text.toString()
-                        , etStatus.text.toString(), etComments.text.toString(), etCustomerNumber.text.toString().toInt()
+                        etOrderNumber.text.toString().toInt(),
+                        etOrderDate.text.toString(),
+                        etRequiredDate.text.toString(),
+                        etShippedDate.text.toString()
+                        ,
+                        etStatus.text.toString(),
+                        etComments.text.toString(),
+                        etCustomerNumber.text.toString().toInt()
                     )
                     presenter.insertData(order)
                 } else {

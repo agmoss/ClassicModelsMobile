@@ -42,6 +42,7 @@ class DialogOrderDetails : Dialog {
                         etOrderLineNumber.text.toString().toInt()
                     )
                     presenter.insertData(detail)
+
                 } else {
                     val detail = OrderDetails(
                         ordDtl!!.orderNumber,
@@ -52,6 +53,10 @@ class DialogOrderDetails : Dialog {
                     )
                     presenter.updateData(detail)
                 }
+
+                //Repopulate
+                presenter.getAllData(selectedOrder)
+
                 dismiss()
             }
         }

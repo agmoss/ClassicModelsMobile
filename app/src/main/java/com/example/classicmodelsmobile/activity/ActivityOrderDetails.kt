@@ -10,7 +10,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.example.classicmodelsmobile.OrderApplication
 import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
@@ -35,21 +34,22 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
-        val app: OrderApplication = this.application as OrderApplication
-
-        val selectedOrder : Order = intent.getSerializableExtra("selectedOrder") as Order
+        val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
 
         presenter = OrderDetailsPresenter(this)
         dialog = DialogOrderDetails(this, presenter!!, selectedOrder)
 
-        presenter?.populateDetails(selectedOrder.details)
-
-        //presenter?.getAllData() populate!!!
+        presenter?.getAllData(selectedOrder)
 
         fabAddDetail.setOnClickListener { view ->
             dialog?.clear()
             dialog?.showDialog(false, null)
         }
+    }
+
+    fun repopulate() {
+        val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
+        presenter?.getAllData(selectedOrder)
     }
 
     override fun setData(listOrders: List<OrderDetails>) {
@@ -90,15 +90,13 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
                         when {
                             menuItem.itemId == R.id.menuDeleteDetail -> {
                                 this@ActivityOrderDetails.presenter?.deleteData(lsOrderDetails[position])
-                                //TODO: Need a refresh
+                                repopulate()
                                 true
-                            }
-                            menuItem.itemId == R.id.menuDeleteDetail -> {
-                                this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
-                                true
+
                             }
                             else -> {
                                 this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
+                                repopulate()
                                 true
                             }
                         }

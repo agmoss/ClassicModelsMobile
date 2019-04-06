@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.example.classicmodelsmobile.OrderApplication
 import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderMvp
@@ -20,7 +19,6 @@ import com.example.classicmodelsmobile.presenter.OrderPresenter
 import com.example.classicmodelsmobile.view.DialogOrder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -34,12 +32,11 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
-        val app: OrderApplication = this.application as OrderApplication
         presenter = OrderPresenter(this)
         dialog = DialogOrder(this, presenter!!)
 
         presenter!!.getAllData()
-        
+
         fabAdd.setOnClickListener { view ->
             dialog?.clear()
             dialog?.showDialog(false, null)
@@ -67,15 +64,11 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         refreshDetail.isRefreshing = isLoad
     }
 
-
     fun switchAct(selectedOrder: Order) {
         val intent = Intent(this, ActivityOrderDetails::class.java)
-        // To pass any data to next activity
         intent.putExtra("selectedOrder", selectedOrder)
-        // start your next activity
         startActivity(intent)
     }
-
 
     inner class RvAdapter(lsOrders: MutableList<Order>) : RecyclerView.Adapter<ViewHolder>() {
 
@@ -97,16 +90,15 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         if (menuItem.itemId == R.id.menuDelete) {
                             this@MainActivity.presenter?.deleteData(lsOrders[position])
-
-                            //TODO: Need a refresh
+                            presenter!!.getAllData()
                             true
                         } else if (menuItem.itemId == R.id.menuEdit) {
-
                             this@MainActivity.dialog?.showDialog(true, lsOrders[position])
+                            presenter!!.getAllData()
                             true
                         } else {
 
-                            val selected : Order = lsOrders[position]
+                            val selected: Order = lsOrders[position]
                             // SWITCH ACTIVITY
                             this@MainActivity.switchAct(selected)
                             true

@@ -9,7 +9,7 @@ import com.github.kittinunf.fuel.httpPut
 import com.google.gson.Gson
 
 
-class OrderPresenter(orderView:OrderMvp.OrderView) : OrderMvp.OrderPresenter {
+class OrderPresenter(orderView: OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
     private val orderView: OrderMvp.OrderView = orderView
 
@@ -19,19 +19,20 @@ class OrderPresenter(orderView:OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
         val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"
 
-        URL.httpPost().header("Content-Type" to "application/json").body(orderJson.toString()).response { req, res, result ->
-            val (res, err) = result
+        URL.httpPost().header("Content-Type" to "application/json").body(orderJson.toString())
+            .response { req, res, result ->
+                val (res, err) = result
 
-            println(result)
+                println(result)
 
-            if(err == null){
-                orderView.setResult("New data added")
-                //TODO: Refresh
-                //getAllData()
-            }else{
-                orderView.setResult(err.toString() + res.toString())
+                if (err == null) {
+                    orderView.setResult("New data added")
+                    //TODO: Refresh (comes from call to getAllData()
+                } else {
+                    orderView.setResult(err.toString() + res.toString())
+                }
             }
-        }
+
     }
 
     override fun getAllData() {
@@ -49,23 +50,23 @@ class OrderPresenter(orderView:OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
                 Orders.add(ord)
             }
+            orderView.setEmpty()
             orderView.setData(Orders)
         }
     }
 
     override fun deleteData(order: Order) {
 
-        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"+order.orderNumber
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/" + order.orderNumber
 
-        URL.httpDelete().header("Content-Type" to "application/json").response{req, res, result ->
+        URL.httpDelete().header("Content-Type" to "application/json").response { req, res, result ->
 
             val (res, err) = result
 
-            if(err == null){
+            if (err == null) {
                 orderView.setResult("Data Deleted")
-                //TODO: Refresh
-                //getAllData()
-            }else{
+                //TODO: Refresh (comes from call to getAllData()
+            } else {
                 orderView.setResult(err.toString() + res.toString())
             }
         }
@@ -76,22 +77,21 @@ class OrderPresenter(orderView:OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
         val orderJson = Gson().toJson(order)
 
-        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/"+order.orderNumber
+        val URL = "https://classicmodelsrest.azurewebsites.net/api/orders/" + order.orderNumber
 
-        URL.httpPut().header("Content-Type" to "application/json").body(orderJson.toString()).response { req, res, result ->
-            val (res, err) = result
+        URL.httpPut().header("Content-Type" to "application/json").body(orderJson.toString())
+            .response { req, res, result ->
+                val (res, err) = result
 
-            println(orderJson)
-            println(result)
+                println(orderJson)
+                println(result)
 
-
-            if(err == null){
-                orderView.setResult("Data updated")
-                //TODO: Refresh
-                //getAllData()
-            }else{
-                orderView.setResult(err.toString() + res.toString())
+                if (err == null) {
+                    orderView.setResult("Data updated")
+                    //TODO: Refresh (comes from call to getAllData()
+                } else {
+                    orderView.setResult(err.toString() + res.toString())
+                }
             }
-        }
     }
 }
