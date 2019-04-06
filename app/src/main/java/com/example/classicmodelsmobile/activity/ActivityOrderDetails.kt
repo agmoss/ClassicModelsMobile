@@ -38,10 +38,10 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         //val app: OrderApplication = this.application as OrderApplication
         var db = DbHelper(this)
 
-        presenter = OrderDetailsPresenter(this, db)
-        dialog = DialogOrderDetails(this, presenter!!)
-
         val selectedOrder : Order = intent.getSerializableExtra("selectedOrder") as Order
+
+        presenter = OrderDetailsPresenter(this, db)
+        dialog = DialogOrderDetails(this, presenter!!, selectedOrder)
 
         presenter?.populateDetails(selectedOrder.details)
 
@@ -51,7 +51,6 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
             dialog?.clear()
             dialog?.showDialog(false, null)
         }
-
     }
 
     override fun setData(listOrders: List<OrderDetails>) {
@@ -71,7 +70,6 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         refreshDetail.isRefreshing = isLoad
     }
 
-
     inner class RvAdapter(lsOrderDetails: MutableList<OrderDetails>) : RecyclerView.Adapter<ViewHolder>() {
 
         var lsOrderDetails: MutableList<OrderDetails> = lsOrderDetails
@@ -87,16 +85,23 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
 
             p0?.itemView?.vOption!!.setOnClickListener {
                 val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
-                popUp.inflate(R.menu.menu_more)
+                popUp.inflate(R.menu.menu_order_details)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
-                        if (menuItem.itemId == R.id.menuDelete) {
-                            this@ActivityOrderDetails.presenter?.deleteData(lsOrderDetails[position].orderNumber)
-                            //TODO: Need a refresh
-                            true
-                        } else {
-                            this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
-                            true
+                        when {
+                            menuItem.itemId == R.id.menuDeleteDetail -> {
+                                this@ActivityOrderDetails.presenter?.deleteData(lsOrderDetails[position])
+                                //TODO: Need a refresh
+                                true
+                            }
+                            menuItem.itemId == R.id.menuDeleteDetail -> {
+                                this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
+                                true
+                            }
+                            else -> {
+                                this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
+                                true
+                            }
                         }
                     }
 

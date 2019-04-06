@@ -40,11 +40,8 @@ class OrderPresenter(orderView:OrderMvp.OrderView, db: DbHelper, ac: Accessor) :
 
                 Orders.add(ord)
             }
-
             orderView.setData(Orders)
-
         }
-
     }
 
     override fun deleteData(id: Int) {

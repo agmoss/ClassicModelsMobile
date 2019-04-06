@@ -20,8 +20,6 @@ import com.example.classicmodelsmobile.presenter.OrderPresenter
 import com.example.classicmodelsmobile.view.DialogOrder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
-import org.jetbrains.anko.doAsync
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
@@ -96,7 +94,7 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
 
             p0?.itemView?.vOption!!.setOnClickListener {
                 val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
-                popUp.inflate(R.menu.menu_more)
+                popUp.inflate(R.menu.menu_order)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         if (menuItem.itemId == R.id.menuDelete) {
