@@ -20,7 +20,7 @@ import com.example.classicmodelsmobile.presenter.OrderPresenter
 import com.example.classicmodelsmobile.view.DialogOrder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
-import java.util.*
+import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         rvDetail_OrderDetail.adapter = adapter
 
         val app: OrderApplication = this.application as OrderApplication
-        presenter = OrderPresenter(this, app.db)
+        presenter = OrderPresenter(this, app.db, app.ac)
         dialog = DialogOrder(this, presenter!!)
 
-        presenter?.getAllData()
 
-        //setSupportActionBar(toolbar)
+        presenter!!.getAllData()
+
 
         fabAdd.setOnClickListener { view ->
             dialog?.clear()
@@ -70,10 +70,10 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
     }
 
 
-    fun switchAct() {
+    fun switchAct(selectedOrder: Order) {
         val intent = Intent(this, ActivityOrderDetails::class.java)
         // To pass any data to next activity
-        //intent.putExtra("keyIdentifier", value)
+        intent.putExtra("selectedOrder", selectedOrder)
         // start your next activity
         startActivity(intent)
     }
@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
 
             p0?.itemView?.vOption!!.setOnClickListener {
                 val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
-                popUp.inflate(R.menu.menu_more)
+                popUp.inflate(R.menu.menu_order)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         if (menuItem.itemId == R.id.menuDelete) {
@@ -108,8 +108,9 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
                             true
                         } else {
 
+                            val selected : Order = lsOrders[position]
                             // SWITCH ACTIVITY
-                            this@MainActivity.switchAct()
+                            this@MainActivity.switchAct(selected)
                             true
                         }
                     }
@@ -119,7 +120,6 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
 
             }
         }
-
 
         override fun getItemCount() = lsOrders.size
 
@@ -142,5 +142,8 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
             }
         }
     }
+
+
+
 
 }

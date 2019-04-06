@@ -5,6 +5,7 @@ import android.content.Context
 import android.widget.Button
 import android.widget.EditText
 import com.example.classicmodelsmobile.R
+import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
 
@@ -19,7 +20,7 @@ class DialogOrderDetails : Dialog {
     var mIsEdit: Boolean = false
     var ordDtl: OrderDetails? = null
 
-    constructor(context: Context, presenter: OrderDetailsPresenter) : super(context) {
+    constructor(context: Context, presenter: OrderDetailsPresenter, selectedOrder: Order) : super(context) {
 
         setContentView(R.layout.create_detail_dialog)
 
@@ -34,18 +35,17 @@ class DialogOrderDetails : Dialog {
                 if (!mIsEdit) {
 
                     val detail = OrderDetails(
-                        0,
-                        etProductCode.text.toString().toInt(),
+                        selectedOrder.orderNumber,
+                        etProductCode.text.toString(),
                         etQuantityOrdered.text.toString(),
-                        etPriceEach.text.toString()
-                        ,
+                        etPriceEach.text.toString(),
                         etOrderLineNumber.text.toString().toInt()
                     )
                     presenter.insertData(detail)
                 } else {
                     val detail = OrderDetails(
                         ordDtl!!.orderNumber,
-                        etProductCode.text.toString().toInt(),
+                        etProductCode.text.toString(),
                         etQuantityOrdered.text.toString(),
                         etPriceEach.text.toString(),
                         etOrderLineNumber.text.toString().toInt()
