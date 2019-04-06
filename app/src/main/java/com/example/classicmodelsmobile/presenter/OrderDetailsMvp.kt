@@ -1,10 +1,11 @@
 package com.example.classicmodelsmobile.presenter
 
+import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 
 class OrderDetailsMvp {
 
-    interface OrderDetailsView{
+    interface OrderDetailsView {
         fun setData(listOrders: List<OrderDetails>)
         fun setEmpty()
         fun setResult(message: String)
@@ -12,10 +13,10 @@ class OrderDetailsMvp {
 
     }
 
-    interface OrderPresenter{
-        fun insertData(order: OrderDetails)
-        fun deleteData(id: Int)
-        fun updateData(order: OrderDetails)
-        fun getAllData()
+    interface OrderPresenter {
+        fun insertData(orderDetail: OrderDetails)
+        fun deleteData(orderDetail: OrderDetails)
+        fun updateData(orderDetail: OrderDetails)
+        fun getAllData(order: Order)
     }
 }

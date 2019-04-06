@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import com.example.classicmodelsmobile.OrderApplication
 import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderMvp
@@ -20,7 +19,6 @@ import com.example.classicmodelsmobile.presenter.OrderPresenter
 import com.example.classicmodelsmobile.view.DialogOrder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
 
@@ -34,13 +32,10 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
-        val app: OrderApplication = this.application as OrderApplication
-        presenter = OrderPresenter(this, app.db, app.ac)
+        presenter = OrderPresenter(this)
         dialog = DialogOrder(this, presenter!!)
 
-
         presenter!!.getAllData()
-
 
         fabAdd.setOnClickListener { view ->
             dialog?.clear()
@@ -69,46 +64,41 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         refreshDetail.isRefreshing = isLoad
     }
 
-
     fun switchAct(selectedOrder: Order) {
         val intent = Intent(this, ActivityOrderDetails::class.java)
-        // To pass any data to next activity
         intent.putExtra("selectedOrder", selectedOrder)
-        // start your next activity
         startActivity(intent)
     }
-
 
     inner class RvAdapter(lsOrders: MutableList<Order>) : RecyclerView.Adapter<ViewHolder>() {
 
         var lsOrders: MutableList<Order> = lsOrders
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ViewHolder {
-            val view: View = LayoutInflater.from(p0?.context).inflate(R.layout.item_list, null, false)
+            val view: View = LayoutInflater.from(p0.context).inflate(R.layout.item_list, null, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(p0: ViewHolder, position: Int) {
 
-            p0?.bindValue(lsOrders[position])
+            p0.bindValue(lsOrders[position])
 
-            p0?.itemView?.vOption!!.setOnClickListener {
-                val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
+            p0.itemView.vOption!!.setOnClickListener {
+                val popUp: PopupMenu = PopupMenu(p0.itemView.context, p0.itemView.vOption)
                 popUp.inflate(R.menu.menu_order)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         if (menuItem.itemId == R.id.menuDelete) {
-                            this@MainActivity.presenter?.deleteData(lsOrders[position].orderNumber)
-
-                            //TODO: Need a refresh
+                            this@MainActivity.presenter?.deleteData(lsOrders[position])
+                            presenter!!.getAllData()
                             true
                         } else if (menuItem.itemId == R.id.menuEdit) {
-
                             this@MainActivity.dialog?.showDialog(true, lsOrders[position])
+                            presenter!!.getAllData()
                             true
                         } else {
 
-                            val selected : Order = lsOrders[position]
+                            val selected: Order = lsOrders[position]
                             // SWITCH ACTIVITY
                             this@MainActivity.switchAct(selected)
                             true
@@ -142,8 +132,5 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
             }
         }
     }
-
-
-
 
 }

@@ -15,7 +15,6 @@ import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsMvp
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
-import com.example.classicmodelsmobile.repository.DbHelper
 import com.example.classicmodelsmobile.view.DialogOrderDetails
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.item_list.view.*
@@ -35,22 +34,22 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
-        //val app: OrderApplication = this.application as OrderApplication
-        var db = DbHelper(this)
+        val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
 
-        val selectedOrder : Order = intent.getSerializableExtra("selectedOrder") as Order
-
-        presenter = OrderDetailsPresenter(this, db)
+        presenter = OrderDetailsPresenter(this)
         dialog = DialogOrderDetails(this, presenter!!, selectedOrder)
 
-        presenter?.populateDetails(selectedOrder.details)
-
-        //presenter?.getAllData() populate!!!
+        presenter?.getAllData(selectedOrder)
 
         fabAddDetail.setOnClickListener { view ->
             dialog?.clear()
             dialog?.showDialog(false, null)
         }
+    }
+
+    fun repopulate() {
+        val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
+        presenter?.getAllData(selectedOrder)
     }
 
     override fun setData(listOrders: List<OrderDetails>) {
@@ -75,31 +74,29 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         var lsOrderDetails: MutableList<OrderDetails> = lsOrderDetails
 
         override fun onCreateViewHolder(p0: ViewGroup, viewType: Int): ViewHolder {
-            val view: View = LayoutInflater.from(p0?.context).inflate(R.layout.item_list, null, false)
+            val view: View = LayoutInflater.from(p0.context).inflate(R.layout.item_list, null, false)
             return ViewHolder(view)
         }
 
         override fun onBindViewHolder(p0: ViewHolder, position: Int) {
 
-            p0?.bindValue(lsOrderDetails[position])
+            p0.bindValue(lsOrderDetails[position])
 
-            p0?.itemView?.vOption!!.setOnClickListener {
-                val popUp: PopupMenu = PopupMenu(p0?.itemView!!.context, p0.itemView.vOption)
+            p0.itemView.vOption!!.setOnClickListener {
+                val popUp: PopupMenu = PopupMenu(p0.itemView.context, p0.itemView.vOption)
                 popUp.inflate(R.menu.menu_order_details)
                 val menuOption: PopupMenu.OnMenuItemClickListener =
                     PopupMenu.OnMenuItemClickListener { menuItem: MenuItem ->
                         when {
                             menuItem.itemId == R.id.menuDeleteDetail -> {
                                 this@ActivityOrderDetails.presenter?.deleteData(lsOrderDetails[position])
-                                //TODO: Need a refresh
+                                repopulate()
                                 true
-                            }
-                            menuItem.itemId == R.id.menuDeleteDetail -> {
-                                this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
-                                true
+
                             }
                             else -> {
                                 this@ActivityOrderDetails.dialog?.showDialog(true, lsOrderDetails[position])
+                                repopulate()
                                 true
                             }
                         }

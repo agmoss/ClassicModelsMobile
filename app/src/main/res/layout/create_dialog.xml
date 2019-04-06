@@ -1,21 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="16dp"
-    >
+              android:orientation="vertical" android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="16dp"
+>
 
     <EditText
-        android:id="@+id/etOrderDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Order Date"
-        />
+            android:id="@+id/etOrderNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Order Number"
+    />
 
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Order Date"
+            android:inputType="date"
+            android:ems="10"
+            android:id="@+id/etOrderDate"/>
     <EditText
             android:id="@+id/etRequiredDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
             android:hint="Required Date"
     />
 
@@ -23,6 +32,8 @@
             android:id="@+id/etShippedDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="date"
+            android:ems="10"
             android:hint="Shipped Date"
     />
 
@@ -35,24 +46,24 @@
 
 
     <EditText
-        android:id="@+id/etComments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Comments"
-        />
+            android:id="@+id/etComments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Comments"
+    />
 
     <EditText
-        android:id="@+id/etCustomerNumber"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Customer Number"
-        />
+            android:id="@+id/etCustomerNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Customer Number"
+    />
 
     <Button
-        android:id="@+id/btnSubmit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Sumbit"
-        />
+            android:id="@+id/btnSubmit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sumbit"
+    />
 
 </LinearLayout>
