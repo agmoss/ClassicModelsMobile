@@ -8,10 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.PopupMenu
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import com.example.classicmodelsmobile.R
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderMvp
