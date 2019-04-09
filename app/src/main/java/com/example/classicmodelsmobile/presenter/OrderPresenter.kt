@@ -8,6 +8,11 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.google.gson.Gson
 
+/**
+ * API requests/ populate data on the UI. Implements OrderPresenter from OrderMvp
+ * @param orderView = MainActivity presenter
+ */
+
 
 class OrderPresenter(orderView: OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
@@ -73,7 +78,6 @@ class OrderPresenter(orderView: OrderMvp.OrderView) : OrderMvp.OrderPresenter {
     }
 
     override fun updateData(order: Order) {
-
 
         val orderJson = Gson().toJson(order)
 

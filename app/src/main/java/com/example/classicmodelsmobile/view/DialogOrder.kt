@@ -8,6 +8,11 @@ import com.example.classicmodelsmobile.R.layout.create_dialog
 import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.presenter.OrderPresenter
 
+/**
+ * Pop up dialog for adding or editing an order
+ * @param mIsEdit is set from the user interface (dictates weather or not the order is being created or edited)
+ */
+
 
 class DialogOrder : Dialog {
     val ctx: Context = context

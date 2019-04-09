@@ -19,8 +19,13 @@ import com.example.classicmodelsmobile.view.DialogOrderDetails
 import kotlinx.android.synthetic.main.activity_order_details.*
 import kotlinx.android.synthetic.main.item_list.view.*
 
-class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsView {
+/**
+ * Activity class for Order details. The order details table is one order to many order details.
+ * A recycler view displays all the order details for the selected order from the main actiivty
+ * Implements the OrderDetailsView interface from OrderDetailsMvp
+ */
 
+class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsView {
 
     var adapter: RvAdapter = RvAdapter(java.util.ArrayList())
     var presenter: OrderDetailsPresenter? = null
@@ -47,6 +52,7 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         }
     }
 
+    // Make a new api get request when the user creates or updates an order detail
     fun repopulate() {
         val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
         presenter?.getAllData(selectedOrder)
@@ -69,6 +75,9 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         refreshDetail.isRefreshing = isLoad
     }
 
+    /**
+     * Adapter class for populating the recyclerview and setting event handlers for CRUD operations
+     */
     inner class RvAdapter(lsOrderDetails: MutableList<OrderDetails>) : RecyclerView.Adapter<ViewHolder>() {
 
         var lsOrderDetails: MutableList<OrderDetails> = lsOrderDetails
@@ -116,12 +125,15 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         }
     }
 
+    /**
+     * Order details to be displayed in the recyclerview
+     */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindValue(detail: OrderDetails) {
 
             with(detail) {
-                itemView.txtTitle.text = "$orderNumber"
+                itemView.txtTitle.text = "$productCode"
                 itemView.txtDesc.text = "$orderLineNumber"
                 itemView.txtDate.text = "$quantityOrdered"
 

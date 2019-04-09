@@ -17,6 +17,12 @@ import com.example.classicmodelsmobile.view.DialogOrder
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.item_list.view.*
 
+/**
+ * Activity class for Orders.
+ * A recycler view displays all orders obtained from an API GET request
+ * Implements the OrderView interface from OrderMvp
+ */
+
 class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout.OnRefreshListener {
 
     var adapter: RvAdapter = RvAdapter(ArrayList<Order>())
@@ -32,6 +38,7 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         presenter = OrderPresenter(this)
         dialog = DialogOrder(this, presenter!!)
 
+        // API request
         presenter!!.getAllData()
 
         fabAdd.setOnClickListener { view ->
@@ -61,12 +68,16 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
         refreshDetail.isRefreshing = isLoad
     }
 
+    // Start ActivityOrderDetails when a user selects "view details" on a selected order
     fun switchAct(selectedOrder: Order) {
         val intent = Intent(this, ActivityOrderDetails::class.java)
         intent.putExtra("selectedOrder", selectedOrder)
         startActivity(intent)
     }
 
+    /**
+     * Adapter class for populating the recyclerview and setting event handlers for CRUD operations
+     */
     inner class RvAdapter(lsOrders: MutableList<Order>) : RecyclerView.Adapter<ViewHolder>() {
 
         var lsOrders: MutableList<Order> = lsOrders
@@ -117,6 +128,9 @@ class MainActivity : AppCompatActivity(), OrderMvp.OrderView, SwipeRefreshLayout
 
     }
 
+    /**
+     * Bind a subset of order attributes to the recyclerview
+     */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bindValue(order: Order) {
