@@ -8,6 +8,11 @@ import com.github.kittinunf.fuel.httpPost
 import com.github.kittinunf.fuel.httpPut
 import com.google.gson.Gson
 
+/**
+ * API requests/ populate data on the UI.
+ * @param orderDetailsView = ActivityOrderDetails presenter
+ */
+
 class OrderDetailsPresenter(orderDetailsView: OrderDetailsMvp.OrderDetailsView) : OrderDetailsMvp.OrderPresenter {
 
     private val orderDetailsView: OrderDetailsMvp.OrderDetailsView = orderDetailsView

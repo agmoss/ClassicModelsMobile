@@ -9,6 +9,12 @@ import com.example.classicmodelsmobile.model.Order
 import com.example.classicmodelsmobile.model.OrderDetails
 import com.example.classicmodelsmobile.presenter.OrderDetailsPresenter
 
+/**
+ * Pop up dialog for adding or editing an order detail
+ * @param mIsEdit is set from the user interface (dictates weather or not the order detail is being created or edited)
+ */
+
+
 class DialogOrderDetails : Dialog {
     val ctx: Context = context
     private val btnSubmit: Button
@@ -20,6 +26,7 @@ class DialogOrderDetails : Dialog {
     var mIsEdit: Boolean = false
     var ordDtl: OrderDetails? = null
 
+    //TODO: Is selected order necessary?
     constructor(context: Context, presenter: OrderDetailsPresenter, selectedOrder: Order) : super(context) {
 
         setContentView(R.layout.create_detail_dialog)
