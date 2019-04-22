@@ -23,6 +23,7 @@ class OrderPresenter(orderView: OrderMvp.OrderView) : OrderMvp.OrderPresenter {
             .response { req, res, result ->
                 val (res, err) = result
 
+
                 println(result)
 
                 if (err == null) {
