@@ -47,7 +47,7 @@ class OrderPresenter(orderView: OrderMvp.OrderView) : OrderMvp.OrderPresenter {
 
         var Orders = ArrayList<Order>()
 
-        URL.httpGet().responseObject(Order.Deserializer()) { request, response, result ->
+        URL.httpGet().timeout(15000).responseObject(Order.Deserializer()) { request, response, result ->
             val (order, err) = result
 
             println("API RESULT $result")
