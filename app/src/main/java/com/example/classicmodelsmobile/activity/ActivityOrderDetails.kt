@@ -36,10 +36,14 @@ class ActivityOrderDetails : AppCompatActivity(), OrderDetailsMvp.OrderDetailsVi
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_details)
 
+
+
         rvDetail_OrderDetail.layoutManager = LinearLayoutManager(this)
         rvDetail_OrderDetail.adapter = adapter
 
         val selectedOrder: Order = intent.getSerializableExtra("selectedOrder") as Order
+
+        supportActionBar?.title = "Order Details for: " + selectedOrder.orderNumber
 
         presenter = OrderDetailsPresenter(this)
         dialog = DialogOrderDetails(this, presenter!!, selectedOrder)
